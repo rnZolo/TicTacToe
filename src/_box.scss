@@ -1,0 +1,24 @@
+.box{
+    aspect-ratio: 1/1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 10px;
+    border: 3px solid #bcbcbc;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.custom-shadow{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 3px 3px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.reset-Btn {
+    display: none;
+    width: 100px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: clamp(1rem, 0.7083rem + 1.3333vw, 1.075rem);
+    text-transform: uppercase;
+}
+
+button:disabled {
+    @apply bg-slate-300;
+}

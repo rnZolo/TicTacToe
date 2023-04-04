@@ -1,0 +1,17 @@
+{
+  "name": "game-ticktacktoe",
+  "version": "1.0.0",
+  "description": "This project is to practice my knowledge about Css and Js By using Frameworks. I claim that it would be successfull",
+  "main": "index.js",
+  "scripts": {
+    "pre:sass": "node-sass -i ./src/styles.scss -o styles --watch",
+    "tailwind-io": "npx tailwindcss -i ./src/styles.scss -o ./styles/styles.css --watch"
+  },
+  "author": "Renz Sagge",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
+  }
+}

@@ -1,0 +1,25 @@
+.plyr1{
+    // background-image: url('../img/plyr1.svg');
+    // background-size: 100px 200px;
+    // background-position: center;
+}
+:root{
+    scroll-behavior: smooth;
+}
+body{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+footer{
+    height: 10vh;
+}
+.header{
+    & img{
+        object-fit: fill;
+    }
+}
