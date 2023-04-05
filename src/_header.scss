@@ -1,10 +1,10 @@
-.plyr1{
-    // background-image: url('../img/plyr1.svg');
-    // background-size: 100px 200px;
-    // background-position: center;
-}
 :root{
     scroll-behavior: smooth;
+}
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box
 }
 body{
     padding: 0;
@@ -18,8 +18,37 @@ body{
 footer{
     height: 10vh;
 }
-.header{
-    & img{
-        object-fit: fill;
-    }
+.plyr1{
+    width: 55%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
+.plyr2{
+    width: 55%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+}
+.name-header{
+        width: calc(70% - 16px);
+        height: calc(100% - 16%);
+        position: absolute;
+    }
+    .name-input{
+        width: calc(100%);
+        height: calc(100%);
+    }
+    .plyr2 .name-header{
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+    .plyr2 .name-input{
+        position: absolute;
+        top: 0;
+        right: 0px;
+    }
+
