@@ -18,7 +18,7 @@ body{
 }
 
 footer{
-  height: 10vh;
+  height: 11vh;
 }
 
 .plyr1{
@@ -186,7 +186,7 @@ input:not(:focus){
 
 button:disabled{
   --tw-bg-opacity: 1;
-  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
 /*
