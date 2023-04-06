@@ -13,6 +13,23 @@
     border: 3px solid #bcbcbc;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+.box-item{
+    outline: none;
+    padding: 5px;
+    display: grid;
+    place-items: center;
+}
+.xo {
+    width: 100%;
+    height: 100%;
+    font-size: 6vw;
+}
+.xo::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .custom-shadow{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 3px 3px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
@@ -41,5 +58,6 @@
     text-transform: uppercase;
 }
 button:disabled {
-    @apply bg-slate-300;
+    @apply bg-slate-200;
 }
+
