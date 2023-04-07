@@ -2,22 +2,20 @@
       const box = document.querySelector(".box"),
       boxBtns = document.querySelectorAll(".box-item"),
       icons = document.querySelectorAll('.xo'),
-      resetBtn = document.querySelector(".reset-Btn"),
+      reBtn = document.querySelector(".reset-Btn"),
       stop = document.querySelector(".stop-Btn"),
       players = document.querySelectorAll('header input'),
       player1TxtBox = document.getElementById('player1-Name'),
       player2TxtBox = document.getElementById('player2-Name')
+    
 
       let assignedName1,
       assignedName2 
 
       // players.forEach((player) => {
       //   player.addEventListener("input", applyName)
-      // })
+      // })      // console.log(assignedName1, assignedName2)
 
-      addBtnEvent()
-
-      // console.log(assignedName1, assignedName2)
       //Game Elements
       const pattern = [    //patterns for winning
         ["1", "2", "3"],
@@ -33,6 +31,7 @@
       player1 = {
         name: `${assignedName1 ?? 'Player 1'}`,
         inputs: [],
+        color: '#745DFF',
         score: 0,
         stamp: ["fa-solid", "fa-xmark", "fa-beat"],
       },
@@ -40,90 +39,103 @@
       player2 = {  
         name: `${assignedName2 ?? 'Player 2'}`,
         inputs: [],
+        color: '#24D24A',
         score: 0,
-        stamp: ["fa-regular", "fa-circle", "fa-beat-fade"]
-      }
-      // Other Game Elements  
-      let whosturn = "player1",
-      ingame = true,
-      turncounter = 0,
-      pN = 1
+        stamp: ["fa-regular", "fa-circle", "fa-beat-fade"],
+      },
+      btnsDefColor = 'white',
+      btnsDisColor = '#cbd5e1'
 
-      //default name
-      players.forEach((player) => {
-      let thisPlayer = player.value ?? undefined
-      player.textContent = thisPlayer ?? `Player ${pN}` 
-      pN++
-      })
-      // validate inputs
-      function pushValidate(event) { 
-        console.log(this)
-        // check if game is still ongoing
-        // if (!ingame) {
-        //   return; //return nothing
-        // }
-        // getting the value of the event clicked
-        targetVal = event.target.getAttribute('value')
-        console.log(targetVal)
-        // disable button so it can't be clicked again
-        event.target.disabled = true
-        let icon = this.querySelector('i')
-        console.log(` ${turncounter + 1 }nth is from: ${whosturn}`)
+      addBtnEvent()// adding event listener to each box item
+      
+      // Other InGame Elements  
+      let whosturn = "player1", // dictates who's turn
+      ingame = true, //for disabling the whole game
+      turncounter = 0, // counter for draw
+      pN = 1, // player Number
+      history = [],
+      historyCounter = 1,
+      winner
+
+      // //default name
+      // players.forEach((player) => {
+      // let thisPlayer = player.value ?? undefined
+      // player.textContent = thisPlayer ?? `Player ${pN}` 
+      // pN++
+      // })
+
+      // validate inputs when box item is clicked
+      function pushValidate() {
+        console.log(` ${turncounter + 1 }nth is from: ${whosturn}`) // log turncounts and player who click
+
+        let targetVal = this.getAttribute('value') // getting the value of the event clicked
+        this.disabled = true // disable button so it can't be clicked again
+        let icon = this.querySelector('i') // use the clicked item to set the target icon
         
         // validate which player is the source of input
         if (whosturn === "player1") {
           player1.inputs.push(targetVal) // add the inputs as entry to the array for pattern validation
-          //addiing class for X icon
+          this.style.background = player1.color
+          // loop to add class in target icon
           player1.stamp.forEach(stmp => {
-            icon.classList.add(stmp)
+            icon.classList.add(stmp) //addiing class for X icon
           });
-          console.log(player1.inputs)
-          // evaluate entries
+
+          // evaluate if array of entries match with winning pattern
           if (checkPattern(player1.inputs, pattern)) {
-            // player1 wins
-            console.log("Player 1 wins!")
-            // whosturn = "player2" //lose are first turn
-            removerIconCLass()
-            hasWinner()
-            return;
-          }
-          whosturn = "player2" // set other player for the next turn
+            console.log("Player 1 wins!")   // player1 wins
+                                // whosturn = "player2" //lose are first turn
+            winner = 'player 1'
+            console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
+            removerIconCLass() // remove the X/O icons classes
+            hasWinner() // apply ingame resets
+            return ; //return use to end the whole validate function // result winner still first try turn
+            
+          }//end checkpattern
+          whosturn = "player2"// set other player for the next turn 
+          //end win player 1
         } else if (whosturn === "player2") {
+          this.style.background = player2.color
           player2.inputs.push(targetVal) // add the inputs as entry to the array for pattern validation
-            //addiing class for X icon
+          // loop to add class in target icon
           player2.stamp.forEach(stmp => {
-            icon.classList.add(stmp)
+            icon.classList.add(stmp)  //addiing class for O icon
           });
-          console.log(player2.inputs)
-          // evaluate entries
+
+          // evaluate if array of entries match with winning pattern
           if (checkPattern(player2.inputs, pattern)) {
-            // player2 wins
-            console.log("Player 2 wins!")
-            // whosturn = "player1" //lose are first turn
-            removerIconCLass()
-            hasWinner()
-            return;
-          }
-          whosturn = "player1" // set other player for the next turn // also winner still 1st turn
-        }
-                // increment turn counter
-                turncounter++;
+            console.log("Player 2 wins!") // player2 wins
+                              // whosturn = "player1" //lose are first turn
+            winner = 'player 2'
+            console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
+            removerIconCLass() // remove the X/O icons classes
+            hasWinner() // apply ingame resets
+            return; //return use to end the whole validate function // result winner still first turn
+
+          } //end checkpattern 
+          whosturn = "player1" // set other player for the next turn 
+
+        } //end win player 2
+          turncounter++; // increment if noone wins
         // check if game ended in a draw
         if (turncounter >= 9) {
           console.log("Game ended in a draw!")
-          removerIconCLass()
-          itsDraw()
-        }
-      }
-
+          winner = 'draw'
+          console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
+          removerIconCLass()  // remove the X/O icons classes
+          itsDraw() // apply ingame resets
+          
+        }//end draw
+    }//end validate
       // add event listener to buttons
       function addBtnEvent() {
         for (let boxBtn of boxBtns) {
           boxBtn.addEventListener("click", pushValidate)
+          boxBtn.style.background = btnsDefColor
           boxBtn.disabled = false
         }
       }
-
+      // check in every pattern if some inputs are  included and match with some pattern 
       function checkPattern(inputArray, patternsArray) {
         //accepet two params the array of users input and array patterns
         // using someMethod that return true if condition is satisfied atleast once
@@ -135,16 +147,16 @@
           );
         });
       }
-
+      // apply ingame resets if there's a winner
       function hasWinner() {
-        resetBtn.style.display = "block"
+        reBtn.style.display = "block"
         stop.style.display = 'block'
         player1.inputs = []
         player2.inputs = []
         turncounter = 0
         addBtnEvent()
       }
-
+      // apply ingame resets if it's a draw
       function itsDraw() {
         player1.inputs = []
         player2.inputs = []
@@ -153,27 +165,43 @@
         turncounter = 0
         addBtnEvent()
       }
-
-      resetBtn.addEventListener("click", () => {
-        player1.inputs = []
-        player2.inputs = []
-        turncounter = 0
-        addBtnEvent()
-        removerIconCLass()
+      // reset the game elements
+      reBtn.addEventListener("click", () => {
+        if (ingame){
+          player1.inputs = []
+          player2.inputs = []
+          turncounter = 0
+          addBtnEvent()
+          removerIconCLass()
+        }else{
+          ingame = true; 
+          reBtn.textContent = 'restart'
+          player1.inputs = []
+          player2.inputs = []
+          turncounter = 0
+          addBtnEvent()
+          removerIconCLass()
+        }
       });
-      
+      // stop or disable the game
       stop.addEventListener('click', () => {
-              ingame = false; // intended for stop button
+            // loop to disable buttons
               for (let boxBtn of boxBtns) {
-                boxBtn.disabled = true
+                let status = boxBtn.hasAttribute('disabled', false) // its true
+                if (!status){
+                  boxBtn.style.background = btnsDisColor
+                  boxBtn.disabled = true
+                }
               }
+              reBtn.textContent = 'Reset'
+              ingame = false; // intended for stop button
       })
-
+      // remover classes in icons
     function removerIconCLass(){
-      let iconClassResets = [...player1.stamp, ...player2.stamp]
-      console.log(iconClassResets)
-      console.log(icons)
+      let iconClassResets = [...player1.stamp, ...player2.stamp] // merge to arrays 
+      // loop each icon
       icons.forEach((icn) => {
+        //loop each class to be removed in icons
         iconClassResets.forEach((clssrst) => {
           if(icn.classList.contains(clssrst)){
             icn.classList.remove(clssrst)
@@ -194,4 +222,4 @@
     // // }
     // }
 
-    ///new
+    ///ne
