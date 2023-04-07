@@ -55,7 +55,7 @@ footer{
   right: -3%;
   top: -24%;
   color: #349c4b;
-  font-size: clamp(9.5rem, 0.7083rem + 1.3333vw, 6.875rem);
+  font-size: clamp(7.5rem, 3.7083rem + 7.3333vw, 9.875rem)
 }
 
 .name-header{
