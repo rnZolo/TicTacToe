@@ -28,15 +28,16 @@
         class="w-full h-4/5 flex-col gap-4 lg:h-4/5 sm2:h-4/5 sm:h-4/5 md:h-4/5"
       >
         <header
-          class="header mx-auto pt-4 w-11/12 lg:h-28 md:h-28 sm:h-28 sm2:h-24 overflow-hidden relative"
+          class="header mx-auto pt-4 w-11/12 lg:h-28 md:h-28 sm:h-28 sm2:h-24 relative"
         >
           <div
-            class="header-wrapper w-full lg:h-28 md:h-28 sm:h-28 sm2:h-24 relative"
+            class="header-wrapper bg-primary w-full h-full relative overflow-hidden"
           >
-            <div class="h-4/5 plyr1 bg-primary p-3 relative">
+            <div class="h-full plyr1 p-3 relative">
+              <i class="header-icon fa-regular fa-circle fa-beat"></i>
               <label
                 for="player1-Name"
-                class="name-header bg-transparent"
+                class="name-header bg-transparent text-white"
                 id="p1-label"
               ></label>
               <input
@@ -46,10 +47,11 @@
                 class="name-input bg-transparent"
               />
             </div>
-            <div class="h-4/5 plyr2 bg-secondary p-3">
+            <div class="h-full plyr2 bg-secondary p-3">
+              <i class="header-icon fa-solid fa-xmark fa-beat"></i>
               <label
                 for="player1-Name"
-                class="name-header bg-transparent"
+                class="name-header bg-transparent text-white"
                 id="p2-label"
               ></label>
               <input

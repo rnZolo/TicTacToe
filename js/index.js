@@ -6,15 +6,17 @@
       stop = document.querySelector(".stop-Btn"),
       players = document.querySelectorAll('header input'),
       player1TxtBox = document.getElementById('player1-Name'),
-      player2TxtBox = document.getElementById('player2-Name')
+      player2TxtBox = document.getElementById('player2-Name'),
+      player1Lbl = document.getElementById('p1-label'),
+      player2Lbl = document.getElementById('p2-label')
     
 
       let assignedName1,
       assignedName2 
 
-      // players.forEach((player) => {
-      //   player.addEventListener("input", applyName)
-      // })      // console.log(assignedName1, assignedName2)
+      players.forEach((player) => {
+        player.addEventListener("input", applyName)
+      })      // console.log(assignedName1, assignedName2)
 
       //Game Elements
       const pattern = [    //patterns for winning
@@ -33,7 +35,7 @@
         inputs: [],
         color: '#745DFF',
         score: 0,
-        stamp: ["fa-solid", "fa-xmark", "fa-beat"],
+        stamp: ["fa-regular", "fa-circle", "fa-beat-fade"],
       },
       // player 2 object
       player2 = {  
@@ -41,7 +43,7 @@
         inputs: [],
         color: '#24D24A',
         score: 0,
-        stamp: ["fa-regular", "fa-circle", "fa-beat-fade"],
+        stamp: ["fa-solid", "fa-xmark", "fa-beat"],
       },
       btnsDefColor = 'white',
       btnsDisColor = '#cbd5e1'
@@ -52,18 +54,19 @@
       let whosturn = "player1", // dictates who's turn
       ingame = true, //for disabling the whole game
       turncounter = 0, // counter for draw
-      pN = 1, // player Number
       history = [],
       historyCounter = 1,
       winner
 
-      // //default name
-      // players.forEach((player) => {
-      // let thisPlayer = player.value ?? undefined
-      // player.textContent = thisPlayer ?? `Player ${pN}` 
-      // pN++
-      // })
-
+      // default name
+      players.forEach((plyr) =>{
+        defaultNaming()
+        plyr.addEventListener('beforeinput', defaultNaming)
+      })
+      itsFocused(player1TxtBox, player1Lbl)
+      blurrIt(player1TxtBox, player1Lbl)
+      itsFocused(player2TxtBox, player2Lbl)
+      blurrIt(player2TxtBox, player2Lbl)
       // validate inputs when box item is clicked
       function pushValidate() {
         console.log(` ${turncounter + 1 }nth is from: ${whosturn}`) // log turncounts and player who click
@@ -87,8 +90,10 @@
                                 // whosturn = "player2" //lose are first turn
             winner = 'player 1'
             console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
-            removerIconCLass() // remove the X/O icons classes
-            hasWinner() // apply ingame resets
+            setTimeout(function(){
+              removerIconCLass() // remove the X/O icons classes
+              hasWinner() // apply ingame resets
+            },500)
             return ; //return use to end the whole validate function // result winner still first try turn
             
           }//end checkpattern
@@ -108,8 +113,10 @@
                               // whosturn = "player1" //lose are first turn
             winner = 'player 2'
             console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
-            removerIconCLass() // remove the X/O icons classes
-            hasWinner() // apply ingame resets
+            setTimeout(function(){
+              removerIconCLass() // remove the X/O icons classes
+              hasWinner() // apply ingame resets
+            },500)
             return; //return use to end the whole validate function // result winner still first turn
 
           } //end checkpattern 
@@ -122,11 +129,27 @@
           console.log("Game ended in a draw!")
           winner = 'draw'
           console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
-          removerIconCLass()  // remove the X/O icons classes
-          itsDraw() // apply ingame resets
+            setTimeout(function(){
+              removerIconCLass() // remove the X/O icons classes
+              itsDraw() // apply ingame resets
+            },500)
+         
           
         }//end draw
     }//end validate
+
+      // giving default name
+      function defaultNaming(){
+        players.forEach((player, index) => {
+          const thisHeader = player.parentNode.querySelector('.name-header');
+          let thisPlayer = player.value.trim();
+          if (!thisPlayer) {
+            thisPlayer = `Player ${index + 1}`;
+          }
+          thisHeader.textContent = thisPlayer;
+        });
+      }
+      
       // add event listener to buttons
       function addBtnEvent() {
         for (let boxBtn of boxBtns) {
@@ -160,8 +183,6 @@
       function itsDraw() {
         player1.inputs = []
         player2.inputs = []
-        console.log( player1.inputs)
-        console.log( player2.inputs)
         turncounter = 0
         addBtnEvent()
       }
@@ -178,6 +199,7 @@
           reBtn.textContent = 'restart'
           player1.inputs = []
           player2.inputs = []
+          whosturn = "player1"
           turncounter = 0
           addBtnEvent()
           removerIconCLass()
@@ -210,16 +232,39 @@
       })
     }
 
-        // function applyName(){
-    // // if (this.id === "player1-Name") { 
-    // //   assignedName1 = this.value 
-    // //   player1Lbl.textContent = assignedName1
-    // //   console.log(player1Lbl)
-    // // }else{
-    // //   assignedName2 = this.value
-    // //   player2Lbl.textContent = assignedName2
-    // //   console.log(player2Lbl)
-    // // }
-    // }
+        function applyName(){
+    if (this.id === "player1-Name") { 
+      assignedName1 = this.value 
+      player1Lbl.textContent = assignedName1
+    }else{
+      assignedName2 = this.value
+      player2Lbl.textContent = assignedName2
+    }
+    }
 
-    ///ne
+    function itsFocused(txtBox, itsLbl){
+      txtBox.addEventListener('focus', () => {
+        txtBox.style.opacity = 1;
+        itsLbl.style.opacity = 0;
+        });
+
+    }
+
+    function blurrIt(txtBox, itsLbl){
+      txtBox.addEventListener('blur', () => {
+        txtBox.style.opacity = 0;
+        itsLbl.style.opacity = 1;
+    });
+  }
+
+  function disableBtn(){
+    boxBtns.forEach((bx) => {
+      bx.disabled = true
+    })
+  }
+    // players.addEventListener('click',hideLabel)
+    // function hideLabel(){
+    //   let lbl = this.querySelector('.name-header')
+    //   console.log(lbl)
+    //   lbl.style.opacity = 0
+    // }

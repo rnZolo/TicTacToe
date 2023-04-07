@@ -11,19 +11,18 @@ body{
     margin: 0;
     box-sizing: border-box;
     
-    &::-webkit-scrollbar{
-        display: none;
-    }
+}
+body::-webkit-scrollbar{
+    display: none;
 }
 footer{
     height: 11vh;
 }
 .plyr1{
     width: 55%;
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: 1;
+    display: flex;
+    flex-flow: row wrap;
 }
 .plyr2{
     width: 55%;
@@ -31,17 +30,38 @@ footer{
     top: 0;
     right: 0;
     z-index: 0;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+}
+.header-icon{
+    position: absolute;
+    font-weight: bolder;
+
+    font-size: clamp(7.5rem, 3.7083rem + 7.3333vw, 9.875rem)
+}
+.plyr1 .header-icon{
+    left: -3%;
+    color: #5a46c9;
+}
+.plyr2 .header-icon {
+    right: -3%;
+    top: -24%;
+    color: #349c4b;
+    font-size: clamp(9.5rem, 0.7083rem + 1.3333vw, 6.875rem);
 }
 .name-header{
-        width: calc(70% - 24px);
-        height: calc(50% - 24px);
-        position: absolute;  
-        top: 6px;
-        padding: 0 10px;
-        font-size: clamp(.8rem, 0.7083rem + 1.3333vw, 1rem);
+        width: calc(100% - 24px);
+        height: 30%;
+        padding: 0 11px;
+        text-transform: capitalize;
+        font-size: clamp(.9rem, 0.7083rem + 1.3333vw, 1.6rem);
+        font-weight: bolder;
+        z-index: 1;
     }
     .name-input{
-        width: calc(70%);
+        width: calc(40%);
+        height: 70%;
         padding: 10px;
         font-weight: bolder;
         letter-spacing: 2px;
@@ -49,42 +69,23 @@ footer{
         font-size: clamp(1rem, 0.7083rem + 1.3333vw, 2.875rem);
         outline: none;
         outline-offset: 0;
-        text-transform: capitalize;
-    }
-    input:not(:focus){
-        animation: animateInputSmall 1s linear .5s both;
-    }
-    .name-input:focus {
-    animation: animateInputBig 1s linear .5s both; 
-    }
-    .plyr2 .name-header{
-        position: absolute;
-        top: 0;
-        right: 0px;
-        text-align: right;
+        opacity: 0;
+        transition: opacity .3s linear;
+        z-index: 1;
     }
     .plyr2 .name-input{
         width: calc(60% - 24px);
         height: calc(100% - 24px);
-        padding-top: 24px;
-        position: absolute;
-        bottom: 20px;
-        right: 12px;  
         text-align: right; 
     }  
-
-    @keyframes animateInputBig {
-        0% {
-            transform: translateY(-10px) scale(.9);
-            border-bottom: 2px solid transparent;
-        }
-        98%{
-            border-bottom: 2px solid transparent;
-        }
-        100% {
-            transform: translateY(0px) scale(1); 
-            border-bottom: 2px solid #ffffff9d;
-        }
+    .plyr2 .name-header{
+        text-align: right;
+    }
+    .name-input:focus{
+        opacity: 1;
+    }
+    .name-input:focus + .name-header{
+      animation: animateInputSmall .7s forwards;
     }
     @keyframes animateInputSmall {
         100% {
