@@ -97,6 +97,23 @@ footer{
   opacity: 1;
 }
 
+.score-counter{
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  right: 20%;
+  top: 10%;
+  transform: translate(-50% -50%);
+  font-size: clamp(1.75rem, 1.3333rem + 1.9048vw, 3rem);
+  font-weight: 700;
+}
+
+.plyr2 .score-counter{
+  left: 20%;
+}
+
 .name-input:focus + .name-header{
   animation: animateInputSmall .7s forwards;
 }
@@ -195,7 +212,7 @@ button:disabled{
 }
 
 .animate-popout{
-  animation: popOut 2s ease-out .3s forwards;
+  animation: popOut 1s ease-out .5s forwards;
 }
 
 @keyframes popOut {
@@ -216,21 +233,7 @@ button:disabled{
     opacity: 0;
   }
 }
-.score-counter{
-  width: 70px;
-  height: 70px;
-  display: grid;
-  place-items: center;
-  position: absolute;
-  left: 70%;
-  top: 10%;
-  transform: translate(-50% -50%);
-  font-size: clamp(1.75rem, 1.3333rem + 1.9048vw, 3rem);
-  font-weight: 700;
-}
-.plyr2 .score-counter{
-  left: 20%;
-}
+
 /*
 ! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com
 */
