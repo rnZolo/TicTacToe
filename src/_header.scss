@@ -45,9 +45,9 @@ footer{
 }
 .plyr2 .header-icon {
     right: -3%;
-    top: -24%;
+    top: -30%;
     color: #349c4b;
-    font-size: clamp(7.5rem, 3.7083rem + 7.3333vw, 9.875rem)
+    font-size: clamp(7.5rem, 5.7083rem + 7.3333vw, 9.875rem)
 }
 .name-header{
         width: calc(100% - 24px);
@@ -83,6 +83,21 @@ footer{
     .name-input:focus{
         opacity: 1;
     }
+    .score-counter{
+        width: 70px;
+        height: 70px;
+        display: grid;
+        place-items: center;
+        position: absolute;
+        left: 70%;
+        top: 10%;
+        transform: translate(-50% -50%);
+        font-size: clamp(1.75rem, 1.3333rem + 1.9048vw, 3rem);
+        font-weight: 700;
+      }
+      .plyr2 .score-counter{
+        left: 20%;
+      }
     .name-input:focus + .name-header{
       animation: animateInputSmall .7s forwards;
     }

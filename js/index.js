@@ -8,7 +8,9 @@
       player1TxtBox = document.getElementById('player1-Name'),
       player2TxtBox = document.getElementById('player2-Name'),
       player1Lbl = document.getElementById('p1-label'),
-      player2Lbl = document.getElementById('p2-label')
+      player2Lbl = document.getElementById('p2-label'),
+      p1Score = document.querySelector('.sc1'),
+      p2Score = document.querySelector('.sc2')
     
 
       let assignedName1,
@@ -35,7 +37,7 @@
         inputs: [],
         color: '#745DFF',
         score: 0,
-        stamp: ["fa-regular", "fa-circle", "fa-beat-fade"],
+        stamp: ["fa-regular", "fa-circle", "fa-beat-fade"]
       },
       // player 2 object
       player2 = {  
@@ -43,7 +45,7 @@
         inputs: [],
         color: '#24D24A',
         score: 0,
-        stamp: ["fa-solid", "fa-xmark", "fa-beat"],
+        stamp: ["fa-solid", "fa-xmark", "fa-beat"]
       },
       btnsDefColor = 'white',
       btnsDisColor = '#cbd5e1'
@@ -56,7 +58,8 @@
       turncounter = 0, // counter for draw
       history = [],
       historyCounter = 1,
-      winner
+      winner,
+      matchedPattern = []
 
       // default name
       players.forEach((plyr) =>{
@@ -67,8 +70,9 @@
       blurrIt(player1TxtBox, player1Lbl)
       itsFocused(player2TxtBox, player2Lbl)
       blurrIt(player2TxtBox, player2Lbl)
+
       // validate inputs when box item is clicked
-      function pushValidate() {
+      function pushValidate() { console.log(player1.score)
         console.log(` ${turncounter + 1 }nth is from: ${whosturn}`) // log turncounts and player who click
 
         let targetVal = this.getAttribute('value') // getting the value of the event clicked
@@ -83,17 +87,21 @@
           player1.stamp.forEach(stmp => {
             icon.classList.add(stmp) //addiing class for X icon
           });
-
           // evaluate if array of entries match with winning pattern
           if (checkPattern(player1.inputs, pattern)) {
+            disableBtn(btnsDefColor)
+            popOutAnim(player1.inputs, pattern)
+            add1Pts(player1)
+            showScore(player1 , p1Score, player2, p2Score)
             console.log("Player 1 wins!")   // player1 wins
-                                // whosturn = "player2" //lose are first turn
+            // whosturn = "player2" //lose are first turn
             winner = 'player 1'
             console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
-            setTimeout(function(){
-              removerIconCLass() // remove the X/O icons classes
-              hasWinner() // apply ingame resets
-            },500)
+                        setTimeout(function(){
+                            popOutRemove(player1.inputs, pattern)
+                            removerIconCLass() // remove the X/O icons classes
+                            hasWinner() // apply ingame resets
+                        },1000)
             return ; //return use to end the whole validate function // result winner still first try turn
             
           }//end checkpattern
@@ -109,14 +117,20 @@
 
           // evaluate if array of entries match with winning pattern
           if (checkPattern(player2.inputs, pattern)) {
+            disableBtn(btnsDefColor)
+            add1Pts(player2)
+            showScore(player1 , p1Score, player2, p2Score)
+            popOutAnim(player2.inputs, pattern)
+            
             console.log("Player 2 wins!") // player2 wins
                               // whosturn = "player1" //lose are first turn
             winner = 'player 2'
             console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
             setTimeout(function(){
+              popOutRemove(player2.inputs, pattern)
               removerIconCLass() // remove the X/O icons classes
               hasWinner() // apply ingame resets
-            },500)
+            },1000)
             return; //return use to end the whole validate function // result winner still first turn
 
           } //end checkpattern 
@@ -133,10 +147,10 @@
               removerIconCLass() // remove the X/O icons classes
               itsDraw() // apply ingame resets
             },500)
-         
           
         }//end draw
     }//end validate
+
 
       // giving default name
       function defaultNaming(){
@@ -159,14 +173,15 @@
         }
       }
       // check in every pattern if some inputs are  included and match with some pattern 
-      function checkPattern(inputArray, patternsArray) {
+      function checkPattern(userInputs, winningPattensGroup) {
         //accepet two params the array of users input and array patterns
         // using someMethod that return true if condition is satisfied atleast once
         // it can be read as on eachpattern inside the patterns array
-        return patternsArray.some((eachPatternFromPatternsArr) => {
+        return winningPattensGroup.some((eachWinningPattern) => {
           // on eachpattern it will test every value if it exist inside the users array
-          return eachPatternFromPatternsArr.every((everyValuesIneachPattern) =>
-            inputArray.includes(everyValuesIneachPattern)
+          // using everyMethod that return true 
+          return eachWinningPattern.every((itsNumbers) => 
+            userInputs.includes(itsNumbers)
           );
         });
       }
@@ -177,6 +192,7 @@
         player1.inputs = []
         player2.inputs = []
         turncounter = 0
+        matchedPattern = []
         addBtnEvent()
       }
       // apply ingame resets if it's a draw
@@ -184,6 +200,7 @@
         player1.inputs = []
         player2.inputs = []
         turncounter = 0
+        matchedPattern = []
         addBtnEvent()
       }
       // reset the game elements
@@ -208,63 +225,97 @@
       // stop or disable the game
       stop.addEventListener('click', () => {
             // loop to disable buttons
-              for (let boxBtn of boxBtns) {
-                let status = boxBtn.hasAttribute('disabled', false) // its true
-                if (!status){
-                  boxBtn.style.background = btnsDisColor
-                  boxBtn.disabled = true
-                }
-              }
+              disableBtn(btnsDisColor)
               reBtn.textContent = 'Reset'
               ingame = false; // intended for stop button
       })
       // remover classes in icons
-    function removerIconCLass(){
-      let iconClassResets = [...player1.stamp, ...player2.stamp] // merge to arrays 
-      // loop each icon
-      icons.forEach((icn) => {
-        //loop each class to be removed in icons
-        iconClassResets.forEach((clssrst) => {
-          if(icn.classList.contains(clssrst)){
-            icn.classList.remove(clssrst)
+      function removerIconCLass(){
+        let iconClassResets = [...player1.stamp, ...player2.stamp] // merge to arrays 
+        // loop each icon
+        icons.forEach((icn) => {
+          //loop each class to be removed in icons
+          iconClassResets.forEach((clssrst) => {
+            if(icn.classList.contains(clssrst)){
+              icn.classList.remove(clssrst)
+            }
+          })
+        })
+      }
+
+      function applyName(){
+      if (this.id === "player1-Name") { 
+        assignedName1 = this.value 
+        player1Lbl.textContent = assignedName1
+      }else{
+        assignedName2 = this.value
+        player2Lbl.textContent = assignedName2
+      }
+      }
+
+      function itsFocused(txtBox, itsLbl){
+        txtBox.addEventListener('focus', () => {
+          txtBox.style.opacity = 1;
+          itsLbl.style.opacity = 0;
+          });
+
+      }
+
+      function blurrIt(txtBox, itsLbl){
+        txtBox.addEventListener('blur', () => {
+          txtBox.style.opacity = 0;
+          itsLbl.style.opacity = 1;
+      });
+      }
+
+      function disableBtn(color){
+        for (let boxBtn of boxBtns) {
+          let status = boxBtn.hasAttribute('disabled', false) // its true
+          if (!status){
+            boxBtn.style.background = color
+            boxBtn.disabled = true
+          }
+        }
+      }
+
+      function toPop(userInputs, winningPatterns){
+        //from the inputs check the values find the winning pattern
+        winningPatterns.some((pattern) => {
+          const patternMatchesInput = pattern.every((number) => userInputs.includes(number));
+          if (patternMatchesInput){
+            matchedPattern.push(...pattern);
           }
         })
-      })
-    }
+              return matchedPattern;
+      }
 
-        function applyName(){
-    if (this.id === "player1-Name") { 
-      assignedName1 = this.value 
-      player1Lbl.textContent = assignedName1
-    }else{
-      assignedName2 = this.value
-      player2Lbl.textContent = assignedName2
-    }
-    }
+      function popOutAnim(inputs, pattern){
+        let pop = toPop(inputs, pattern)
+        pop.forEach((item) => {
+            boxBtns.forEach((box) =>{
+              if (item === box.value){
+                  box.classList.add('animate-popout')
+              }
+          })
+        })
+      }
 
-    function itsFocused(txtBox, itsLbl){
-      txtBox.addEventListener('focus', () => {
-        txtBox.style.opacity = 1;
-        itsLbl.style.opacity = 0;
-        });
+      function popOutRemove(inputs, pattern){
+        let pop = toPop(inputs, pattern)
+        pop.forEach((item) => {
+        boxBtns.forEach((box) =>{
+            if (item === box.value){
+              box.classList.remove('animate-popout')
+            }
+          })
+        })
+      }
 
-    }
+      function add1Pts(hepts){
+        hepts.score++
+      }
 
-    function blurrIt(txtBox, itsLbl){
-      txtBox.addEventListener('blur', () => {
-        txtBox.style.opacity = 0;
-        itsLbl.style.opacity = 1;
-    });
-  }
-
-  function disableBtn(){
-    boxBtns.forEach((bx) => {
-      bx.disabled = true
-    })
-  }
-    // players.addEventListener('click',hideLabel)
-    // function hideLabel(){
-    //   let lbl = this.querySelector('.name-header')
-    //   console.log(lbl)
-    //   lbl.style.opacity = 0
-    // }
+      function showScore(plyr1, sB1, plyr2, sB2){
+          sB1.textContent = plyr1.score
+          sB2.textContent = plyr2.score
+      }
