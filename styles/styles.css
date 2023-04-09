@@ -118,6 +118,29 @@ footer{
   animation: animateInputSmall .7s forwards;
 }
 
+.announcer{
+  position: absolute;
+  top: calc(1rem * 2);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  z-index: 10;
+}
+
+.ann-text{
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  text-align: center;
+  min-width: 200px;
+  opacity: 0;
+}
+
+.animate-showwinner{
+  animation: showwinner 1s ease-out forwards;
+}
+
 @keyframes animateInputSmall {
   100% {
     transform: translateY(-10px) scale(.9);
@@ -131,6 +154,26 @@ footer{
   0% {
     transform: translateY(0px) scale(1);
     border-bottom: 2px solid #ffffff9d;
+  }
+}
+
+@keyframes showwinner {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) scaleX(.5);
+  }
+
+  30%{
+    opacity: .5;
+  }
+
+  50%{
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 
@@ -1008,6 +1051,15 @@ video {
   height: 80%;
 }
 
+.h-9{
+  height: 2.25rem;
+}
+
+.h-fit{
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
 .h-full{
   height: 100%;
 }
@@ -1018,6 +1070,15 @@ video {
 
 .w-11\/12{
   width: 91.666667%;
+}
+
+.w-3\/12{
+  width: 25%;
+}
+
+.w-fit{
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .w-full{
@@ -1078,6 +1139,10 @@ video {
 
 .transform-none{
   transform: none;
+}
+
+.animate-none{
+  animation: none;
 }
 
 .touch-auto{
@@ -2047,6 +2112,10 @@ video {
      object-fit: scale-down;
 }
 
+.p-1{
+  padding: 0.25rem;
+}
+
 .p-2{
   padding: 0.5rem;
 }
@@ -2660,6 +2729,10 @@ video {
   .md\:w-2\/5{
     width: 40%;
   }
+
+  .md\:pt-10{
+    padding-top: 2.5rem;
+  }
 }
 
 @media (min-width: 1024px){
@@ -2677,6 +2750,10 @@ video {
 
   .lg\:p-5{
     padding: 1.25rem;
+  }
+
+  .lg\:pt-10{
+    padding-top: 2.5rem;
   }
 }
 

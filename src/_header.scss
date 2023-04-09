@@ -101,6 +101,28 @@ footer{
     .name-input:focus + .name-header{
       animation: animateInputSmall .7s forwards;
     }
+    .announcer{
+        position: absolute;
+        top: calc(1rem * 2);
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 200px;
+        z-index: 10;
+      }
+      
+      .ann-text{
+        border-radius: 20px;
+        font-size: 20px;
+        font-weight: bolder;
+        letter-spacing: 2px;
+        text-align: center;
+        min-width: 200px;
+        opacity: 0;
+      }
+      .animate-showwinner{
+        animation: showwinner 1s ease-out forwards;
+      }
+
     @keyframes animateInputSmall {
         100% {
             transform: translateY(-10px) scale(.9);
@@ -114,3 +136,21 @@ footer{
             border-bottom: 2px solid #ffffff9d;
         }
     }
+
+      @keyframes showwinner {
+        0% {
+          opacity: 0;
+          transform: translateY(-50px) scaleX(.5);
+        }
+      
+        30%{
+          opacity: .5;
+        }
+        50%{
+          opacity: 1;
+          transform: translateY(0) scaleX(1);
+        }
+        100% {
+          opacity: 1;
+        }
+      }

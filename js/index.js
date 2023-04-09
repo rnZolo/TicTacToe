@@ -10,16 +10,9 @@
       player1Lbl = document.getElementById('p1-label'),
       player2Lbl = document.getElementById('p2-label'),
       p1Score = document.querySelector('.sc1'),
-      p2Score = document.querySelector('.sc2')
+      p2Score = document.querySelector('.sc2'),
+      winnerBoard = document.querySelector('.ann-text')
     
-
-      let assignedName1,
-      assignedName2 
-
-      players.forEach((player) => {
-        player.addEventListener("input", applyName)
-      })      // console.log(assignedName1, assignedName2)
-
       //Game Elements
       const pattern = [    //patterns for winning
         ["1", "2", "3"],
@@ -33,7 +26,7 @@
       ],
        // player 1 object
       player1 = {
-        name: `${assignedName1 ?? 'Player 1'}`,
+        name: `${player1Lbl ?? 'Player 1'}`,
         inputs: [],
         color: '#745DFF',
         score: 0,
@@ -41,14 +34,27 @@
       },
       // player 2 object
       player2 = {  
-        name: `${assignedName2 ?? 'Player 2'}`,
+        name: `${player2Lbl ?? 'Player 2'}`,
         inputs: [],
         color: '#24D24A',
         score: 0,
         stamp: ["fa-solid", "fa-xmark", "fa-beat"]
       },
       btnsDefColor = 'white',
-      btnsDisColor = '#cbd5e1'
+      btnsDisColor = '#cbd5e1',
+      tie = 'Draw'
+
+      let assignedName1,
+      assignedName2 
+      players.forEach((player) => {
+        player.addEventListener("input", applyName)
+      }) 
+
+      // default name
+      players.forEach((plyr) =>{
+        defaultNaming()
+        plyr.addEventListener('beforeinput', defaultNaming)
+      })
 
       addBtnEvent()// adding event listener to each box item
       
@@ -64,8 +70,9 @@
       // default name
       players.forEach((plyr) =>{
         defaultNaming()
-        plyr.addEventListener('beforeinput', defaultNaming)
+        plyr.addEventListener('beforeinput', defaultNaming())
       })
+
       itsFocused(player1TxtBox, player1Lbl)
       blurrIt(player1TxtBox, player1Lbl)
       itsFocused(player2TxtBox, player2Lbl)
@@ -89,13 +96,14 @@
           });
           // evaluate if array of entries match with winning pattern
           if (checkPattern(player1.inputs, pattern)) {
+            winnerIS(player1.name, player1.color)
             disableBtn(btnsDefColor)
             popOutAnim(player1.inputs, pattern)
             add1Pts(player1)
             showScore(player1 , p1Score, player2, p2Score)
-            console.log("Player 1 wins!")   // player1 wins
-            // whosturn = "player2" //lose are first turn
-            winner = 'player 1'
+            whosturn = "player2" //lose are first turn
+            winner = 'player 1' //history purposes
+
             console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
                         setTimeout(function(){
                             popOutRemove(player1.inputs, pattern)
@@ -117,15 +125,16 @@
 
           // evaluate if array of entries match with winning pattern
           if (checkPattern(player2.inputs, pattern)) {
+            winnerIS(player2.name , player2.color)
             disableBtn(btnsDefColor)
             add1Pts(player2)
             showScore(player1 , p1Score, player2, p2Score)
             popOutAnim(player2.inputs, pattern)
-            
-            console.log("Player 2 wins!") // player2 wins
-                              // whosturn = "player1" //lose are first turn
-            winner = 'player 2'
+
+            whosturn = "player1" //lose are first turn
+            winner = 'player 2' //history purposes
             console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
+            
             setTimeout(function(){
               popOutRemove(player2.inputs, pattern)
               removerIconCLass() // remove the X/O icons classes
@@ -140,7 +149,7 @@
           turncounter++; // increment if noone wins
         // check if game ended in a draw
         if (turncounter >= 9) {
-          console.log("Game ended in a draw!")
+          winnerIS(tie , btnsDisColor )
           winner = 'draw'
           console.log(`${historyCounter} | ${player1.inputs} | ${player2.inputs} | ${winner} `)
             setTimeout(function(){
@@ -156,9 +165,16 @@
       function defaultNaming(){
         players.forEach((player, index) => {
           const thisHeader = player.parentNode.querySelector('.name-header');
-          let thisPlayer = player.value.trim();
+          let thisPlayer = player.value.trim(); 
+        
           if (!thisPlayer) {
             thisPlayer = `Player ${index + 1}`;
+          }
+        
+          if (index === 0) {
+            player1.name = thisPlayer;
+          } else if (index === 1) {
+            player2.name = thisPlayer;
           }
           thisHeader.textContent = thisPlayer;
         });
@@ -216,6 +232,10 @@
           reBtn.textContent = 'restart'
           player1.inputs = []
           player2.inputs = []
+          player1.score = 0
+          player2.score = 0
+          p1Score.innerHTML = ''
+          p2Score.innerHTML = ''
           whosturn = "player1"
           turncounter = 0
           addBtnEvent()
@@ -244,14 +264,14 @@
       }
 
       function applyName(){
-      if (this.id === "player1-Name") { 
-        assignedName1 = this.value 
-        player1Lbl.textContent = assignedName1
-      }else{
-        assignedName2 = this.value
-        player2Lbl.textContent = assignedName2
-      }
-      }
+        if (this.id === "player1-Name") { 
+          assignedName1 = this.value 
+          player1Lbl.textContent = assignedName1
+        }else{
+          assignedName2 = this.value
+          player2Lbl.textContent = assignedName2
+        }
+        }
 
       function itsFocused(txtBox, itsLbl){
         txtBox.addEventListener('focus', () => {
@@ -318,4 +338,19 @@
       function showScore(plyr1, sB1, plyr2, sB2){
           sB1.textContent = plyr1.score
           sB2.textContent = plyr2.score
+      }
+
+      function winnerIS(who, color){
+       if (who === tie){
+        winnerBoard.textContent = tie
+        winnerBoard.style.color = "white"
+        winnerBoard.style.background = btnsDisColor
+       }else{
+        winnerBoard.textContent = `${who} wins`
+        winnerBoard.style.color = color
+       }
+        winnerBoard.classList.add('animate-showwinner')
+        setTimeout(()=>{
+          winnerBoard.classList.remove('animate-showwinner')
+        },1000)
       }
