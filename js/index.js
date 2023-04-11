@@ -53,7 +53,7 @@
       // default name
       players.forEach((plyr) =>{
         defaultNaming()
-        plyr.addEventListener('beforeinput', defaultNaming)
+        plyr.addEventListener('input', defaultNaming)
       })
 
       addBtnEvent()// adding event listener to each box item
@@ -79,7 +79,7 @@
       blurrIt(player2TxtBox, player2Lbl)
 
       // validate inputs when box item is clicked
-      function pushValidate() { console.log(player1.score)
+      function pushValidate() {
         console.log(` ${turncounter + 1 }nth is from: ${whosturn}`) // log turncounts and player who click
 
         let targetVal = this.getAttribute('value') // getting the value of the event clicked
@@ -158,19 +158,18 @@
             },500)
           
         }//end draw
-    }//end validate
-
+      }//end validate
 
       // giving default name
       function defaultNaming(){
         players.forEach((player, index) => {
           const thisHeader = player.parentNode.querySelector('.name-header');
-          let thisPlayer = player.value.trim(); 
-        
+          let thisPlayer = player.value.trim()
+
           if (!thisPlayer) {
             thisPlayer = `Player ${index + 1}`;
           }
-        
+
           if (index === 0) {
             player1.name = thisPlayer;
           } else if (index === 1) {
@@ -352,5 +351,5 @@
         winnerBoard.classList.add('animate-showwinner')
         setTimeout(()=>{
           winnerBoard.classList.remove('animate-showwinner')
-        },1000)
+        },1500)
       }
